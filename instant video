@@ -1,0 +1,120 @@
+from pathlib import Path
+
+html = r'''<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>PhotoShare</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#fafafa;color:#111}
+nav{height:60px;background:#fff;border-bottom:1px solid #ddd;display:flex;align-items:center;justify-content:space-between;padding:0 20px;position:sticky;top:0;z-index:5}
+.logo{font-size:25px;font-weight:bold}
+.search{background:#f1f1f1;border:0;border-radius:8px;padding:10px 15px;width:240px;outline:0}
+.icons{display:flex;gap:18px;font-size:22px}
+.container{max-width:1000px;margin:25px auto;display:grid;grid-template-columns:minmax(0,650px) 280px;gap:30px}
+.stories,.post{background:#fff;border:1px solid #ddd;border-radius:10px}
+.stories{padding:15px;display:flex;gap:18px;overflow:auto}
+.story{text-align:center;min-width:65px;font-size:12px}
+.avatar{width:58px;height:58px;border-radius:50%;padding:3px;margin:auto auto 6px;background:linear-gradient(135deg,#ff9a00,#e52e71,#7b2cff)}
+.avatar span{display:flex;width:100%;height:100%;border-radius:50%;background:#ddd;align-items:center;justify-content:center;font-size:23px}
+.post{margin-top:20px;overflow:hidden}
+.post-head{display:flex;align-items:center;gap:10px;padding:12px 15px}
+.small-avatar{width:38px;height:38px;border-radius:50%;background:#ddd;display:flex;align-items:center;justify-content:center}
+.username{font-weight:bold}.more{margin-left:auto;font-size:22px}
+.post-image{width:100%;height:430px;object-fit:cover;display:block;background:#ddd}
+.actions{display:flex;gap:16px;padding:12px 15px;font-size:25px}
+.actions button{border:0;background:none;cursor:pointer;font-size:25px}
+.like.active{color:#e11}
+.likes,.caption,.comments{padding:0 15px 10px}
+.likes{font-weight:bold}.caption b{margin-right:5px}.comments{color:#777}
+.comment-box{display:flex;border-top:1px solid #eee;padding:10px 15px}
+.comment-box input{flex:1;border:0;outline:0}.comment-box button{border:0;background:none;color:#0095f6;font-weight:bold;cursor:pointer}
+.sidebar{position:sticky;top:85px;height:max-content}.profile{display:flex;align-items:center;gap:12px;margin-bottom:25px}
+.profile-avatar{width:55px;height:55px;border-radius:50%;background:#ddd;display:flex;align-items:center;justify-content:center;font-size:24px}
+.muted{color:#777;font-size:14px}.suggestion{display:flex;align-items:center;gap:10px;margin:15px 0}
+.follow{margin-left:auto;color:#0095f6;border:0;background:none;font-weight:bold;cursor:pointer}
+@media(max-width:800px){.container{display:block;margin:10px}.sidebar{display:none}.search{width:140px}.post-image{height:360px}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">PhotoShare</div>
+  <input class="search" id="search" placeholder="Search">
+  <div class="icons"><span>⌂</span><span>♡</span><span>✉</span><span>◉</span></div>
+</nav>
+
+<div class="container">
+<main>
+  <div class="stories">
+    <div class="story"><div class="avatar"><span>😀</span></div>You</div>
+    <div class="story"><div class="avatar"><span>😎</span></div>Ali</div>
+    <div class="story"><div class="avatar"><span>🌸</span></div>Sara</div>
+    <div class="story"><div class="avatar"><span>🔥</span></div>Hamza</div>
+    <div class="story"><div class="avatar"><span>🐱</span></div>Ayesha</div>
+    <div class="story"><div class="avatar"><span>🌴</span></div>Usman</div>
+  </div>
+
+  <article class="post">
+    <div class="post-head">
+      <div class="small-avatar">😎</div><span class="username">ali_khan</span><span class="more">•••</span>
+    </div>
+    <img class="post-image" src="https://picsum.photos/900/650?random=21" alt="Post image">
+    <div class="actions">
+      <button class="like">♡</button><button>💬</button><button>➤</button>
+      <button style="margin-left:auto">🔖</button>
+    </div>
+    <div class="likes">1,248 likes</div>
+    <div class="caption"><b>ali_khan</b> Beautiful day! 🌅</div>
+    <div class="comments" id="comments">View all 42 comments</div>
+    <div class="comment-box">
+      <input id="commentInput" placeholder="Add a comment...">
+      <button id="commentBtn">Post</button>
+    </div>
+  </article>
+
+  <article class="post">
+    <div class="post-head">
+      <div class="small-avatar">🌸</div><span class="username">sara_01</span><span class="more">•••</span>
+    </div>
+    <img class="post-image" src="https://picsum.photos/900/650?random=35" alt="Post image">
+    <div class="actions"><button class="like">♡</button><button>💬</button><button>➤</button><button style="margin-left:auto">🔖</button></div>
+    <div class="likes">834 likes</div>
+    <div class="caption"><b>sara_01</b> Weekend vibes ✨</div>
+  </article>
+</main>
+
+<aside class="sidebar">
+  <div class="profile">
+    <div class="profile-avatar">😀</div>
+    <div><b>my_profile</b><div class="muted">Your profile</div></div>
+  </div>
+  <div class="muted">Suggestions for you</div>
+  <div class="suggestion"><div class="small-avatar">🐱</div><b>ayesha</b><button class="follow">Follow</button></div>
+  <div class="suggestion"><div class="small-avatar">🔥</div><b>hamza</b><button class="follow">Follow</button></div>
+  <div class="suggestion"><div class="small-avatar">🌴</div><b>usman</b><button class="follow">Follow</button></div>
+</aside>
+</div>
+
+<script>
+document.querySelectorAll('.like').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    btn.classList.toggle('active');
+    btn.textContent=btn.classList.contains('active')?'♥':'♡';
+  });
+});
+document.querySelectorAll('.follow').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    btn.textContent=btn.textContent==='Follow'?'Following':'Follow';
+  });
+});
+document.getElementById('commentBtn').onclick=()=>{
+  const input=document.getElementById('commentInput');
+  if(input.value.trim()){
+    document.getElementById('comments').textContent='You: '+input.value;
+    input.value='';
+  }
+};
+document.getElementById('search').addEventListener('input
